@@ -4,7 +4,6 @@ install_requirements.py
 Ce script crée un environnement virtuel (si nécessaire) puis installe
 toutes les dépendances listées dans requirements.txt.
 """
-import subprocess
 from .init_project_helper import *
 
 

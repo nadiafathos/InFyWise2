@@ -1,6 +1,4 @@
-import subprocess
-
-from il.enum.env import EnvironmentVariable as Env
+from il import EnvironmentVariable as Env
 from utils import Logger
 
 from .init_project_helper import *
@@ -31,7 +29,7 @@ def define_flask_env():
     os.environ.setdefault("APP_SETTINGS", "config.TestingConfig")
     os.environ["FLASK_APP"] = "app:create_flask_app()"
 
-def run(debug: bool = Env.DEBUG_MODE.get(), testing: bool = Env.RUN_AS_TESTING.get()):
+def run(debug: bool = Env.DEBUG_MODE.value, testing: bool = Env.RUN_AS_TESTING.value):
     """
         Point d'entrée principal du script.
 

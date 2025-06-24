@@ -3,6 +3,7 @@ import sys
 from flask import Flask
 from sqlalchemy import create_engine, text
 
+from dal.extensions import db
 from il.enum.app_config import AppConfiguration
 from il.enum.env import EnvironmentVariable
 from utils import Logger
@@ -63,8 +64,13 @@ def create_db_if_doesnt_exists():
 
 def config_app_db_context(app: Flask):
     create_db_if_doesnt_exists()
-    app.config[config.SQLALCHEMY_DATABASE_URI] = get_pg_db_uri()
-    app.config[config.SQLALCHEMY_TRACK_MODIFICATIONS] = get_pg_modif_tracker()
+    app.config[config.SQLALCHEMY_DATABASE_URI.value] = get_pg_db_uri()
+    app.config[config.SQLALCHEMY_TRACK_MODIFICATIONS.value] = get_pg_modif_tracker()
+
+    db.init_app(app)
+
+    with app.app_context():
+        db.create_all()
 
 
 

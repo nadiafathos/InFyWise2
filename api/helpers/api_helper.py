@@ -2,7 +2,7 @@ from flask import Blueprint
 from dal.utils.enums import Table
 import inspect
 
-def define_blueprint(table_name: Table):
+def define_blueprint(table_name: Table) -> Blueprint:
     '''
     Méthode généralisant la logique de définition d'un blueprint.
 

@@ -1,5 +1,9 @@
+import subprocess
+
 from il import EnvironmentVariable as Env
+from flask import Flask
 from utils import Logger
+from app import create_flask_app
 
 from .init_project_helper import *
 """
@@ -29,7 +33,7 @@ def define_flask_env():
     os.environ.setdefault("APP_SETTINGS", "config.TestingConfig")
     os.environ["FLASK_APP"] = "app:create_flask_app()"
 
-def run(debug: bool = Env.DEBUG_MODE.get(), testing: bool = Env.RUN_AS_TESTING.get()):
+def run(testing: bool = Env.RUN_AS_TESTING.get()):
     """
         Point d'entrée principal du script.
 
@@ -44,19 +48,17 @@ def run(debug: bool = Env.DEBUG_MODE.get(), testing: bool = Env.RUN_AS_TESTING.g
         """
     define_flask_env()
 
-    if testing:
-        cmd = [ get_python(), "-m", "pytest", "--maxfail=1", "--disable-warnings" ]
-        Logger.info(f"Lancement de Flask en mode test via : {cmd}")
-    else:
-        cmd = [ get_python(), "-m", "flask", "run" ]
-        if debug:
-            cmd.append('--debug')
-
-        Logger.info(f"Lancement de Flask via : {cmd}")
-
     try:
+        if testing:
+            cmd = [get_python(), "-m", "pytest", "--maxfail=1", "--disable-warnings"]
+            Logger.info(f"Lancement de Flask en mode test via : {cmd}")
+            subprocess.check_call(cmd, cwd=BASE_DIR)
 
-        subprocess.check_call(cmd, cwd=BASE_DIR)
+        else:
+            create_flask_app().run(
+                host=Env.HOST.get(),
+                port=Env.PORT.get(),
+            )
     except subprocess.CalledProcessError as e :
         Logger.error(f"Flask s'est arrêté avec l'erreur : {e}")
         sys.exit(e.returncode)

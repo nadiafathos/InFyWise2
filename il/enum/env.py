@@ -15,6 +15,9 @@ class EnvironmentVariable(Enum):
     DEBUG_MODE = ('DEBUG_MODE', False, bool)
     RUN_AS_TESTING =  ('RUN_AS_TESTING', False, bool)
     INIT_REQUIREMENTS = ('INIT_REQUIREMENTS', False, bool)
+    ENVIRONMENT = ('ENV', 'development', str)
+    HOST = ('HOST', '127.0.0.1', str)
+    PORT = ('PORT', '5000', str)
 
     def __init__(self, key: str, default, cast_type):
         self._key = key

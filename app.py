@@ -22,7 +22,7 @@ def register_blueprints():
             app.register_blueprint(bp)
 
 def get_endpoint_list():
-    if not Env.RUN_AS_TESTING.value:
+    if not Env.RUN_AS_TESTING.get():
         Logger.info("Liste des endpoints disponibles :")
 
         for rule in sorted(app.url_map.iter_rules(), key=lambda r: (r.endpoint, r.rule) ):

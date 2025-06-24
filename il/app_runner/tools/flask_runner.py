@@ -29,7 +29,7 @@ def define_flask_env():
     os.environ.setdefault("APP_SETTINGS", "config.TestingConfig")
     os.environ["FLASK_APP"] = "app:create_flask_app()"
 
-def run(debug: bool = Env.DEBUG_MODE.value, testing: bool = Env.RUN_AS_TESTING.value):
+def run(debug: bool = Env.DEBUG_MODE.get(), testing: bool = Env.RUN_AS_TESTING.get()):
     """
         Point d'entrée principal du script.
 

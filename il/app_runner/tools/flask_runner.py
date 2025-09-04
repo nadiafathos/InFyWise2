@@ -33,7 +33,7 @@ def define_flask_env():
     os.environ.setdefault("APP_SETTINGS", "config.TestingConfig")
     os.environ["FLASK_APP"] = "app:create_flask_app()"
 
-def run(testing: bool = Env.RUN_AS_TESTING.get()):
+def run():
     """
         Point d'entrée principal du script.
 
@@ -49,16 +49,10 @@ def run(testing: bool = Env.RUN_AS_TESTING.get()):
     define_flask_env()
 
     try:
-        if testing:
-            cmd = [get_python(), "-m", "pytest", "--maxfail=1", "--disable-warnings"]
-            Logger.info(f"Lancement de Flask en mode test via : {cmd}")
-            subprocess.check_call(cmd, cwd=BASE_DIR)
-
-        else:
-            create_flask_app().run(
-                host=Env.HOST.get(),
-                port=Env.PORT.get(),
-            )
+        create_flask_app().run(
+            host=Env.HOST.get(),
+            port=Env.PORT.get(),
+        )
     except subprocess.CalledProcessError as e :
         Logger.error(f"Flask s'est arrêté avec l'erreur : {e}")
         sys.exit(e.returncode)

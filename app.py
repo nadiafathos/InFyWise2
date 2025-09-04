@@ -26,15 +26,14 @@ def register_blueprints():
             app.register_blueprint(bp)
 
 def get_endpoint_list():
-    if not Env.RUN_AS_TESTING.get():
-        Logger.info("Liste des endpoints disponibles :")
+    Logger.info("Liste des endpoints disponibles :")
 
-        for rule in sorted(app.url_map.iter_rules(), key=lambda r: (r.endpoint, r.rule) ):
-            methods = ",".join(sorted(rule.methods - {"HEAD", "OPTIONS"}))
-            Logger.info(
-                msg=f" → {rule}",
-                prf= f'{str.upper(str.split(rule.endpoint, '.')[0])} : {methods}'
-            )
+    for rule in sorted(app.url_map.iter_rules(), key=lambda r: (r.endpoint, r.rule) ):
+        methods = ",".join(sorted(rule.methods - {"HEAD", "OPTIONS"}))
+        Logger.info(
+            msg=f" → {rule}",
+            prf= f'{str.upper(str.split(rule.endpoint, '.')[0])} : {methods}'
+        )
 
 def register_models(package_name: str):
     """

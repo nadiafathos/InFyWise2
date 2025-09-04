@@ -2,3 +2,15 @@
 
 .env
 !.env.exemple
+# Python
+__pycache__/
+*.pyc
+
+# Environment
+
+
+
+# IDE
+.idea/
+*.iml
+.vscode/

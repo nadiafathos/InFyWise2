@@ -13,7 +13,6 @@ class EnvironmentVariable(Enum):
     DB_NAME = ('DB_NAME', 'db', str)
     TRACK_MODIFICATIONS = ('TRACK_MODIFICATIONS', False, bool)
     DEBUG_MODE = ('DEBUG_MODE', False, bool)
-    RUN_AS_TESTING =  ('RUN_AS_TESTING', False, bool)
     INIT_REQUIREMENTS = ('INIT_REQUIREMENTS', False, bool)
     ENVIRONMENT = ('ENV', 'development', str)
     HOST = ('HOST', '127.0.0.1', str)

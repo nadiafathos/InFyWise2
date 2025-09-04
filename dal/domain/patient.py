@@ -1,19 +1,26 @@
-from sqlalchemy.orm import relationship
 
-from dal.utils.enums import  Table
+
+from dal.utils.enums import PostCol, ProfileCol, Table, Entity
+
+from datetime import datetime, timezone
+from sqlalchemy import Enum, DateTime, Date, ForeignKey
 from dal.extensions import db
-from dal.utils.dal_helper import get_fk
 
-class Role(db.Model):
-    __tablename__=Table.ROLE.value
-    id = db.Column(db.Integer,primary_key=True)
-    name =db.Column(db.String(50),unique=True,nullable=False)
-    description = db.Column(db.String(150),nullable=True)
+class Patient(db.Model):
+    __tablename__ = Table.PATIENT.value
+    id = db.Column(db.Integer,ForeignKey("users.id"),primary_key=True)
+    birth_date= db.Column(Date,nullable=False)
 
-#relation bi directionnelle avec user et role .user donne le n om de tous les utiliszteurs ayant ce role
-    #
 
-    users = relationship("User",back_populates="role")
 
-    def __repr__(self):
-       return f"<Role {self.name}>"
+
+#relationship
+#relations one to many
+symptoms = db.relationship('SymptomEntry',backref='patient',lazy="joined")
+appointments = db.relationship('Appointment',backref='patient',lazy="joined")
+testimonies = db.relationship('Testimony',backref='patient',lazy="joined")
+
+def __repr__(self):
+
+
+    return f"<Patient {self.id_patient}>"

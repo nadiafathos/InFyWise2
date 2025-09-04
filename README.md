@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 1. Exigences et User Stories
 
 1.1 Acteurs et rôles
@@ -120,3 +121,7 @@ classDiagram
     USER "1" --> "0..*" APPOINTMENT : "handles (as doctor)"
 
 
+=======
+# InFyWise2
+a new version of my app
+>>>>>>> 23c623577e9c710aa30345fe6ff60e2d572096d9

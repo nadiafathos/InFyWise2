@@ -150,100 +150,99 @@ Diagramme Entité-Relation
 - En tant que patient,
   
 - je veux recevoir une notification lorsque mon rendez-vous est confirmé,
-  
+
 
 ```mermaid
-  erDiagram
-  USERS {
-  int id PK
-  string first_name
-  string last_name
-  date birth_date
-  string email
-  string password_hash
-  enum role "PATIENT, MEDECIN, ADMIN"
-  datetime created_at
-  datetime updated_at
-  }
+erDiagram
+    USERS {
+        int id PK
+        string first_name
+        string last_name
+        date birth_date
+        string email
+        string password_hash
+        string role
+        datetime created_at
+        datetime updated_at
+    }
 
-  SPECIALITES {
-  int id PK
-  string name
-  }
+    SPECIALITES {
+        int id PK
+        string name
+    }
 
-  USER_SPECIALITES {
-  int user_id FK
-  int specialite_id FK
-  }
+    USER_SPECIALITES {
+        int user_id FK
+        int specialite_id FK
+    }
 
-  CATEGORIES {
-  int id PK
-  string name
-  }
+    CATEGORIES {
+        int id PK
+        string name
+    }
 
-  PATHOLOGIES {
-  int id PK
-  string name
-  text description
-  enum status "PENDING, VALIDATED, REJECTED"
-  int specialite_id FK
-  datetime created_at
-  datetime updated_at
-  }
+    PATHOLOGIES {
+        int id PK
+        string name
+        string description
+        string status
+        int specialite_id FK
+        datetime created_at
+        datetime updated_at
+    }
 
-  PATHOLOGIE_CAUSES {
-  int id PK
-  int pathologie_id FK
-  text description
-  }
+    PATHOLOGIE_CAUSES {
+        int id PK
+        int pathologie_id FK
+        string description
+    }
 
-  PATHOLOGIE_EFFETS {
-  int id PK
-  int pathologie_id FK
-  text description
-  }
+    PATHOLOGIE_EFFETS {
+        int id PK
+        int pathologie_id FK
+        string description
+    }
 
-  PATHOLOGIE_CATEGORIES {
-  int pathologie_id FK
-  int category_id FK
-  }
+    PATHOLOGIE_CATEGORIES {
+        int pathologie_id FK
+        int category_id FK
+    }
 
-  TEMOIGNAGES {
-  int id PK
-  int user_id FK
-  text content
-  datetime submitted_at
-  enum status "PENDING, VALIDATED, REJECTED"
-  }
+    TEMOIGNAGES {
+        int id PK
+        int user_id FK
+        string content
+        datetime submitted_at
+        string status
+    }
 
-  TEMOIGNAGE_CATEGORIES {
-  int temoignage_id FK
-  int category_id FK
-  }
+    TEMOIGNAGE_CATEGORIES {
+        int temoignage_id FK
+        int category_id FK
+    }
 
-  RENDEZ_VOUS {
-  int id PK
-  int patient_id FK
-  int medecin_id FK
-  datetime appointment_datetime
-  enum status "PENDING, CONFIRMED, CANCELLED"
-  text commentaire
-  }
+    RENDEZ_VOUS {
+        int id PK
+        int patient_id FK
+        int medecin_id FK
+        datetime appointment_datetime
+        string status
+        string commentaire
+    }
 
-  USERS ||--o{ USER_SPECIALITES : specializes_in
-  SPECIALITES ||--o{ USER_SPECIALITES : assigned_to
+    USERS ||--o{ USER_SPECIALITES : specializes_in
+    SPECIALITES ||--o{ USER_SPECIALITES : assigned_to
 
-  SPECIALITES ||--o{ PATHOLOGIES : contains
-  PATHOLOGIES ||--o{ PATHOLOGIE_CAUSES : has_causes
-  PATHOLOGIES ||--o{ PATHOLOGIE_EFFETS : has_effects
-  PATHOLOGIES ||--o{ PATHOLOGIE_CATEGORIES : categorized_in
-  CATEGORIES ||--o{ PATHOLOGIE_CATEGORIES : applies_to
+    SPECIALITES ||--o{ PATHOLOGIES : contains
+    PATHOLOGIES ||--o{ PATHOLOGIE_CAUSES : has_causes
+    PATHOLOGIES ||--o{ PATHOLOGIE_EFFETS : has_effects
+    PATHOLOGIES ||--o{ PATHOLOGIE_CATEGORIES : categorized_in
+    CATEGORIES ||--o{ PATHOLOGIE_CATEGORIES : applies_to
 
-  USERS ||--o{ TEMOIGNAGES : writes
-  TEMOIGNAGES ||--o{ TEMOIGNAGE_CATEGORIES : categorized_in
-  CATEGORIES ||--o{ TEMOIGNAGE_CATEGORIES : applies_to
+    USERS ||--o{ TEMOIGNAGES : writes
+    TEMOIGNAGES ||--o{ TEMOIGNAGE_CATEGORIES : categorized_in
+    CATEGORIES ||--o{ TEMOIGNAGE_CATEGORIES : applies_to
 
-  USERS ||--o{ RENDEZ_VOUS : requests_appointments_as_patient
-  USERS ||--o{ RENDEZ_VOUS : manages_appointments_as_medecin
-  fin de planifier ma venue.
-- 
+    USERS ||--o{ RENDEZ_VOUS : requests_appointments_as_patient
+    USERS ||--o{ RENDEZ_VOUS : manages_appointments_as_medecin
+it

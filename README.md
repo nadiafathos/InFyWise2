@@ -1,4 +1,13 @@
-<<<<<<< HEAD
+InfyWise – API d’infertilité féminine
+InfyWise est une plateforme REST pensée pour accompagner les patientes et les médecins dans le suivi de l’infertilité féminine.
+Le backend est développé en Python avec Flask et SQLAlchemy, le frontend en Angular pour une interface réactive et intuitive.
+
+🎯 Objectif
+Offrir un écosystème complet où :
+• 	Les patientes peuvent créer un compte, partager leurs témoignages, gérer leurs rendez-vous.
+• 	Les médecins référencent des pathologies (avec causes & effets), prennent et valident les rendez-vous.
+• 	Les médecins experts (rôle ADMIN) modèrent et catégorisent les témoignages et pathologies selon leur spécialité.
+
 1. Exigences et User Stories
 
 1.1 Acteurs et rôles
@@ -74,54 +83,96 @@ Entités principales et associations :
 4. Modèle Logique de Données (MLD)
 ## 📌 Modèle Logique de Données (MLD)
 
+## 📌 Modèle Logique de Données (MLD)
+
 Voici le modèle logique final de la base de données :
 
 ```mermaid
-classDiagram
-    class ROLE {
+erDiagram
+    USERS {
         int id PK
-        string name
-        string description
-    }
-
-    class USER {
-        int id PK
-        string last_name
-        string first_name
-        string email (unique)
-        string password
-        datetime registration_date
-        int role_id FK -> ROLE.id
-    }
-
-    class PATIENT {
-        int id PK, FK -> USER.id
+        varchar first_name
+        varchar last_name
         date birth_date
+        varchar email
+        varchar password_hash
+        datetime created_at
+        datetime updated_at
     }
-
-    class DOCTOR {
-        int id PK, FK -> USER.id
-        string speciality
-        string hospital
-    }
-
-    class APPOINTMENT {
+    ROLES {
         int id PK
-        int patient_id FK -> USER.id
-        int medecin_id FK -> USER.id
+        enum name
+    }
+    USER_ROLES {
+        int user_id PK, FK
+        int role_id PK, FK
+    }
+    SPECIALITES {
+        int id PK
+        varchar name
+    }
+    USER_SPECIALITES {
+        int user_id PK, FK
+        int specialite_id PK, FK
+    }
+    CATEGORIES {
+        int id PK
+        varchar name
+    }
+    PATHOLOGIES {
+        int id PK
+        varchar name
+        text description
+        enum status
+        int specialite_id FK
+        datetime created_at
+        datetime updated_at
+    }
+    PATHOLOGIE_CAUSES {
+        int id PK
+        int pathologie_id FK
+        text description
+    }
+    PATHOLOGIE_EFFETS {
+        int id PK
+        int pathologie_id FK
+        text description
+    }
+    PATHOLOGIE_CATEGORIES {
+        int pathologie_id PK, FK
+        int category_id PK, FK
+    }
+    TEMOIGNAGES {
+        int id PK
+        int user_id FK
+        text content
+        datetime submitted_at
+        enum status
+    }
+    TEMOIGNAGE_CATEGORIES {
+        int temoignage_id PK, FK
+        int category_id PK, FK
+    }
+    RENDEZ_VOUS {
+        int id PK
+        int patient_id FK
+        int medecin_id FK
         datetime appointment_datetime
-        enum status {PENDING, CONFIRMED, CANCELLED}
+        enum status
+        text commentaire
     }
 
-    %% Relations
-    ROLE "1" --> "0..*" USER : "assigns"
-    USER "1" --> "0..1" PATIENT : "is"
-    USER "1" --> "0..1" DOCTOR : "is"
-    USER "1" --> "0..*" APPOINTMENT : "books (as patient)"
-    USER "1" --> "0..*" APPOINTMENT : "handles (as doctor)"
-
-
-=======
-# InFyWise2
-a new version of my app
->>>>>>> 23c623577e9c710aa30345fe6ff60e2d572096d9
+    USERS ||--o{ USER_ROLES           : has
+    ROLES ||--o{ USER_ROLES           : assigned_to
+    USERS ||--o{ USER_SPECIALITES     : specializes_in
+    SPECIALITES ||--o{ USER_SPECIALITES : assigned_to
+    SPECIALITES ||--o{ PATHOLOGIES      : contains
+    PATHOLOGIES ||--o{ PATHOLOGIE_CAUSES   : has_causes
+    PATHOLOGIES ||--o{ PATHOLOGIE_EFFETS   : has_effects
+    PATHOLOGIES ||--o{ PATHOLOGIE_CATEGORIES: categorized_in
+    CATEGORIES ||--o{ PATHOLOGIE_CATEGORIES : applies_to
+    USERS ||--o{ TEMOIGNAGES          : writes
+    TEMOIGNAGES ||--o{ TEMOIGNAGE_CATEGORIES: categorized_in
+    CATEGORIES ||--o{ TEMOIGNAGE_CATEGORIES: applies_to
+    USERS ||--o{ RENDEZ_VOUS          : requests_as_patient
+    USERS ||--o{ RENDEZ_VOUS          : manages_as_medecin
